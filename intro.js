@@ -1733,10 +1733,12 @@
       //calculate element top and left
       var _x = 0;
       var _y = 0;
-      while (element && !isNaN(element.offsetLeft) && !isNaN(element.offsetTop)) {
-        _x += element.offsetLeft;
-        _y += element.offsetTop;
-        element = element.offsetParent;
+      var _el = element;
+      while (_el && !isNaN(_el.offsetLeft) && !isNaN(_el.offsetTop)) {
+        // add parent clientLeft/clientTop to account for borders
+        _x += _el === element ? _el.offsetLeft : _el.offsetLeft + _el.clientLeft;
+        _y += _el === element ? _el.offsetTop : _el.offsetTop + _el.clientTop;
+        _el = _el.offsetParent;
       }
       //set top
       elementPosition.top = _y;
