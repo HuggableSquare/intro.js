@@ -204,18 +204,21 @@
   border: 0;
 }
 
+.introjs-donebutton,
 .introjs-skipbutton {
   margin-right: 5px;
   color: #c00;
   background: transparent;
 }
 
+.introjs-donebutton:hover,
 .introjs-skipbutton:hover {
     background: #EB1540;
     border-color: #B91D0D;
 
 }
 
+.introjs-donebutton:active, .introjs-donebutton:focus,
 .introjs-skipbutton:active, .introjs-skipbutton:focus {
     background: #C02312;
     /* box-shadow: 0 1px 0px -0px #6F1309; */

@@ -184,6 +184,7 @@ tr.introjs-showElement > th {
   border: 0;
 }
 
+.introjs-donebutton,
 .introjs-skipbutton {
   margin-right: 5px;
   color: #fff;

@@ -269,6 +269,7 @@ tr.introjs-showElement > th {
   border: 0;
 }
 
+.introjs-donebutton,
 .introjs-skipbutton {
   box-sizing: content-box;
   margin-right: 5px;

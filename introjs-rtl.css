@@ -1,6 +1,7 @@
 .introjs-tooltipbuttons {
   text-align: left;
 }
+.introjs-donebutton,
 .introjs-skipbutton {
   margin-left: 5px;
 }

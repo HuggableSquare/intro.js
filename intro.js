@@ -808,7 +808,7 @@
           oldtooltipLayer      = oldReferenceLayer.querySelector('.introjs-tooltiptext'),
           oldArrowLayer        = oldReferenceLayer.querySelector('.introjs-arrow'),
           oldtooltipContainer  = oldReferenceLayer.querySelector('.introjs-tooltip'),
-          skipTooltipButton    = oldReferenceLayer.querySelector('.introjs-skipbutton'),
+          skipTooltipButton    = oldReferenceLayer.querySelector('.introjs-skipbutton') || oldReferenceLayer.querySelector('.introjs-donebutton'),
           prevTooltipButton    = oldReferenceLayer.querySelector('.introjs-prevbutton'),
           nextTooltipButton    = oldReferenceLayer.querySelector('.introjs-nextbutton');
 
@@ -1025,6 +1025,7 @@
 
     prevTooltipButton.removeAttribute('tabIndex');
     nextTooltipButton.removeAttribute('tabIndex');
+    skipTooltipButton.className = 'introjs-button introjs-skipbutton';
 
     if (this._currentStep == 0 && this._introItems.length > 1) {
       nextTooltipButton.className = 'introjs-button introjs-nextbutton';
