@@ -102,7 +102,7 @@
         //use querySelector function only when developer used CSS selector
         if (typeof(currentItem.element) === 'string') {
           //grab the element with given selector from the page
-          currentItem.element = document.querySelector(currentItem.element);
+          currentItem.element = document.querySelector(currentItem.element) || currentItem.element;
         }
 
         //intro without element
@@ -350,6 +350,17 @@
     }
 
     var nextStep = this._introItems[this._currentStep];
+    if (typeof nextStep.element === 'string') {
+      var _el = document.querySelector(nextStep.element);
+      // if the element doesn't exist now, then just make it a floating element
+      if (_el) {
+        nextStep.element = _el;
+      } else {
+        nextStep.element = document.querySelector('.introjsFloatingElement');
+        nextStep.position = 'floating';
+      }
+    }
+
     if (typeof (this._introBeforeChangeCallback) !== 'undefined') {
       this._introBeforeChangeCallback.call(this, nextStep.element, this._currentStep);
     }
@@ -371,6 +382,17 @@
     }
 
     var nextStep = this._introItems[--this._currentStep];
+    if (typeof nextStep.element === 'string') {
+      var _el = document.querySelector(nextStep.element);
+      // if the element doesn't exist now, then just make it a floating element
+      if (_el) {
+        nextStep.element = _el;
+      } else {
+        nextStep.element = document.querySelector('.introjsFloatingElement');
+        nextStep.position = 'floating';
+      }
+    }
+
     if (typeof (this._introBeforeChangeCallback) !== 'undefined') {
       this._introBeforeChangeCallback.call(this, nextStep.element, this._currentStep);
     }
