@@ -356,7 +356,16 @@
       if (_el) {
         nextStep.element = _el;
       } else {
-        nextStep.element = document.querySelector('.introjsFloatingElement');
+        var floatingElementQuery = document.querySelector('.introjsFloatingElement');
+
+        if (!floatingElementQuery) {
+          floatingElementQuery = document.createElement('div');
+          floatingElementQuery.className = 'introjsFloatingElement';
+
+          document.body.appendChild(floatingElementQuery);
+        }
+
+        nextStep.element = floatingElementQuery;
         nextStep.position = 'floating';
       }
     }
