@@ -1773,34 +1773,11 @@
     var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
     var scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
 
-    if (element instanceof SVGElement) {
-      var x = element.getBoundingClientRect()
-      elementPosition.top = x.top + scrollTop;
-      elementPosition.width = x.width;
-      elementPosition.height = x.height;
-      elementPosition.left = x.left + scrollLeft;
-    } else {
-      //set width
-      elementPosition.width = element.offsetWidth;
-
-      //set height
-      elementPosition.height = element.offsetHeight;
-
-      //calculate element top and left
-      var _x = 0;
-      var _y = 0;
-      var _el = element;
-      while (_el && !isNaN(_el.offsetLeft) && !isNaN(_el.offsetTop)) {
-        // add parent clientLeft/clientTop to account for borders
-        _x += _el === element ? _el.offsetLeft : _el.offsetLeft + _el.clientLeft;
-        _y += _el === element ? _el.offsetTop : _el.offsetTop + _el.clientTop;
-        _el = _el.offsetParent;
-      }
-      //set top
-      elementPosition.top = _y;
-      //set left
-      elementPosition.left = _x;
-    }
+    var x = element.getBoundingClientRect()
+    elementPosition.top = x.top + scrollTop;
+    elementPosition.left = x.left + scrollLeft;
+    elementPosition.width = x.width;
+    elementPosition.height = x.height;
 
     return elementPosition;
   }
