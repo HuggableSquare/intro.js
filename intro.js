@@ -101,6 +101,7 @@
         currentItem.step = introItems.length + 1;
         //use querySelector function only when developer used CSS selector
         if (typeof(currentItem.element) === 'string') {
+          currentItem.selector = currentItem.element;
           //grab the element with given selector from the page
           currentItem.element = document.querySelector(currentItem.element) || currentItem.element;
         }
@@ -512,11 +513,6 @@
 
     arrowLayer.style.display = 'inherit';
 
-    if (typeof(helperNumberLayer) != 'undefined' && helperNumberLayer != null) {
-      helperNumberLayer.style.top  = null;
-      helperNumberLayer.style.left = null;
-    }
-
     //prevent error when `this._currentStep` is undefined
     if (!this._introItems[this._currentStep]) return;
 
@@ -536,9 +532,21 @@
         currentTooltipPosition = _determineAutoPosition.call(this, targetElement, tooltipLayer, currentTooltipPosition);
       }
     }
+
     targetOffset  = _getOffset(targetElement);
     tooltipOffset = _getOffset(tooltipLayer);
     windowSize    = _getWinSize();
+
+    if (typeof(helperNumberLayer) != 'undefined' && helperNumberLayer != null) {
+      var isFullScreenTarget = windowSize.width - targetOffset.width < 40;
+      helperNumberLayer.style.top  = null;
+      helperNumberLayer.style.left = isFullScreenTarget ? -targetOffset.left + 5 + 'px' : null;
+
+      const vertical = targetOffset.top > 10 ? 'top' : 'bottom';
+      const horizontal = targetOffset.left > 10 ? 'left' : 'right';
+
+      helperNumberLayer.className = "introjs-helperNumberLayer " + vertical + "-" + horizontal;
+    }
 
     switch (currentTooltipPosition) {
       case 'top':
@@ -815,6 +823,11 @@
    * @param {Object} targetElement
    */
   function _showElement(targetElement) {
+    // try to requery element if it is dynamic
+    if(!document.body.contains(targetElement.element)) {
+      targetElement.element = document.querySelector(targetElement.selector);
+    }
+
     if (typeof (this._introChangeCallback) !== 'undefined') {
       this._introChangeCallback.call(this, targetElement.element, this._currentStep);
     }

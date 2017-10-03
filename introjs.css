@@ -450,6 +450,25 @@ tr.introjs-showElement > th {
   opacity: 0;
 }
 
+.introjs-helperNumberLayer.top-left {
+  top: -16px;
+  left: -16px;
+}
+.introjs-helperNumberLayer.top-right {
+	left: auto;
+	right: -16px;
+}
+.introjs-helperNumberLayer.bottom-left {
+	top: auto;
+	bottom: -16px;
+}
+.introjs-helperNumberLayer.bottom-right {
+	top: auto;
+	left: auto;
+	bottom: -16px;
+	right: -16px;
+}
+
 @-moz-keyframes introjspulse {
  0% {
     -moz-transform: scale(0);
