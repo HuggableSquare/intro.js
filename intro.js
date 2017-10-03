@@ -250,6 +250,17 @@
       self._onResize = function(e) {
         _setHelperLayerPosition.call(self, document.querySelector('.introjs-helperLayer'));
         _setHelperLayerPosition.call(self, document.querySelector('.introjs-tooltipReferenceLayer'));
+
+        if (!self._introItems[self._currentStep]) {
+          return;
+        }
+
+        var currentElement  = self._introItems[self._currentStep],
+          tooltipLayer = document.querySelector('.introjs-tooltip'),
+          arrowLayer = document.querySelector('.introjs-arrow');
+          helperNumberLayer = document.querySelector('.introjs-helperNumberLayer')
+
+        _placeTooltip.call(self, currentElement.element, tooltipLayer, arrowLayer, helperNumberLayer);
       };
 
       if (window.addEventListener) {
