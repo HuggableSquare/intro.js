@@ -553,8 +553,8 @@
       helperNumberLayer.style.top  = null;
       helperNumberLayer.style.left = isFullScreenTarget ? -targetOffset.left + 5 + 'px' : null;
 
-      const vertical = targetOffset.top > 10 ? 'top' : 'bottom';
-      const horizontal = targetOffset.left > 10 ? 'left' : 'right';
+      var vertical = targetOffset.top > 10 ? 'top' : 'bottom';
+      var horizontal = targetOffset.left > 10 ? 'left' : 'right';
 
       helperNumberLayer.className = "introjs-helperNumberLayer " + vertical + "-" + horizontal;
     }
