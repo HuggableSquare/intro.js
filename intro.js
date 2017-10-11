@@ -101,6 +101,7 @@
         currentItem.step = introItems.length + 1;
         //use querySelector function only when developer used CSS selector
         if (typeof(currentItem.element) === 'string') {
+          currentItem.selector = currentItem.element;
           //grab the element with given selector from the page
           currentItem.element = document.querySelector(currentItem.element) || currentItem.element;
         }
@@ -249,6 +250,17 @@
       self._onResize = function(e) {
         _setHelperLayerPosition.call(self, document.querySelector('.introjs-helperLayer'));
         _setHelperLayerPosition.call(self, document.querySelector('.introjs-tooltipReferenceLayer'));
+
+        if (!self._introItems[self._currentStep]) {
+          return;
+        }
+
+        var currentElement  = self._introItems[self._currentStep],
+          tooltipLayer = document.querySelector('.introjs-tooltip'),
+          arrowLayer = document.querySelector('.introjs-arrow');
+          helperNumberLayer = document.querySelector('.introjs-helperNumberLayer')
+
+        _placeTooltip.call(self, currentElement.element, tooltipLayer, arrowLayer, helperNumberLayer);
       };
 
       if (window.addEventListener) {
@@ -512,11 +524,6 @@
 
     arrowLayer.style.display = 'inherit';
 
-    if (typeof(helperNumberLayer) != 'undefined' && helperNumberLayer != null) {
-      helperNumberLayer.style.top  = null;
-      helperNumberLayer.style.left = null;
-    }
-
     //prevent error when `this._currentStep` is undefined
     if (!this._introItems[this._currentStep]) return;
 
@@ -536,9 +543,21 @@
         currentTooltipPosition = _determineAutoPosition.call(this, targetElement, tooltipLayer, currentTooltipPosition);
       }
     }
+
     targetOffset  = _getOffset(targetElement);
     tooltipOffset = _getOffset(tooltipLayer);
     windowSize    = _getWinSize();
+
+    if (typeof(helperNumberLayer) != 'undefined' && helperNumberLayer != null) {
+      var isFullScreenTarget = windowSize.width - targetOffset.width < 40;
+      helperNumberLayer.style.top  = null;
+      helperNumberLayer.style.left = isFullScreenTarget ? -targetOffset.left + 5 + 'px' : null;
+
+      var vertical = targetOffset.top > 10 ? 'top' : 'bottom';
+      var horizontal = targetOffset.left > 10 ? 'left' : 'right';
+
+      helperNumberLayer.className = "introjs-helperNumberLayer " + vertical + "-" + horizontal;
+    }
 
     switch (currentTooltipPosition) {
       case 'top':
@@ -589,7 +608,7 @@
         tooltipLayer.style.marginLeft = '-' + (tooltipOffset.width / 2)  + 'px';
         tooltipLayer.style.marginTop  = '-' + (tooltipOffset.height / 2) + 'px';
 
-        if (typeof(helperNumberLayer) != 'undefined' && helperNumberLayer != null) {
+        if (typeof(helperNumberLayer) != 'undefined' && helperNumberLayer != null && currentStepObj.element.className.indexOf('introjsFloatingElement') !== -1) {
           helperNumberLayer.style.left = '-' + ((tooltipOffset.width / 2) + 18) + 'px';
           helperNumberLayer.style.top  = '-' + ((tooltipOffset.height / 2) + 18) + 'px';
         }
@@ -815,6 +834,11 @@
    * @param {Object} targetElement
    */
   function _showElement(targetElement) {
+    // try to requery element if it is dynamic
+    if(!document.body.contains(targetElement.element)) {
+      targetElement.element = document.querySelector(targetElement.selector);
+    }
+
     if (typeof (this._introChangeCallback) !== 'undefined') {
       this._introChangeCallback.call(this, targetElement.element, this._currentStep);
     }
@@ -1749,34 +1773,11 @@
     var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
     var scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
 
-    if (element instanceof SVGElement) {
-      var x = element.getBoundingClientRect()
-      elementPosition.top = x.top + scrollTop;
-      elementPosition.width = x.width;
-      elementPosition.height = x.height;
-      elementPosition.left = x.left + scrollLeft;
-    } else {
-      //set width
-      elementPosition.width = element.offsetWidth;
-
-      //set height
-      elementPosition.height = element.offsetHeight;
-
-      //calculate element top and left
-      var _x = 0;
-      var _y = 0;
-      var _el = element;
-      while (_el && !isNaN(_el.offsetLeft) && !isNaN(_el.offsetTop)) {
-        // add parent clientLeft/clientTop to account for borders
-        _x += _el === element ? _el.offsetLeft : _el.offsetLeft + _el.clientLeft;
-        _y += _el === element ? _el.offsetTop : _el.offsetTop + _el.clientTop;
-        _el = _el.offsetParent;
-      }
-      //set top
-      elementPosition.top = _y;
-      //set left
-      elementPosition.left = _x;
-    }
+    var x = element.getBoundingClientRect()
+    elementPosition.top = x.top + scrollTop;
+    elementPosition.left = x.left + scrollLeft;
+    elementPosition.width = x.width;
+    elementPosition.height = x.height;
 
     return elementPosition;
   }
