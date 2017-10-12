@@ -77,7 +77,9 @@
       /* Hint button label */
       hintButtonLabel: 'Got it',
       /* Adding animation to hints? */
-      hintAnimation: true
+      hintAnimation: true,
+      /* Can be skipped */
+      skippable: true
     };
   }
 
@@ -1080,7 +1082,7 @@
 
     prevTooltipButton.removeAttribute('tabIndex');
     nextTooltipButton.removeAttribute('tabIndex');
-    skipTooltipButton.className = 'introjs-button introjs-skipbutton';
+    skipTooltipButton.className = 'introjs-button introjs-skipbutton' + (this._options.skippable ? '' : ' introjs-hidden');
 
     if (this._currentStep == 0 && this._introItems.length > 1) {
       nextTooltipButton.className = 'introjs-button introjs-nextbutton';
